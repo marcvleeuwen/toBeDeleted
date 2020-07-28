@@ -1,0 +1,22 @@
+table {
+  width: 100%;
+}
+
+.d-none {
+  display: none;
+}
+
+.show {
+  box-shadow: inset 4px 4px 7px #f2f2f2,
+  inset -4px -4px 7px #ffffff;
+}
+
+.hover-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+tbody {
+  padding: 0 15px;
+}

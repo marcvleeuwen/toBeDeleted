@@ -1,0 +1,37 @@
+<table [dataSource]="data"
+       class="mat-elevation-z8" mat-table
+       multiTemplateDataRows>
+  <ng-container *ngFor="let column of columnsKeys"
+                [ngSwitch]="getConfigData(column, 'type')"
+                matColumnDef="{{column}}">
+    <th *matHeaderCellDef [class.text-end]="getConfigData(column, 'type') === 'amount'"
+        mat-header-cell> {{getConfigData(column, 'display') | titlecase}} </th>
+    <!--  default row  -->
+    <td *matCellDef="let element" [class.text-end]="getConfigData(column, 'type') === 'amount'" mat-cell>
+      <ng-container *ngSwitchCase="'amount'">{{element[column] | currency:"R "}}</ng-container>
+      <ng-container *ngSwitchCase="'date'">{{element[column] | date:"yyyy-MM-dd"}}</ng-container>
+      <ng-container *ngSwitchDefault>{{element[column]}}</ng-container>
+    </td>
+  </ng-container>
+
+  <!--  grouping  -->
+  <ng-container matColumnDef="groupHeaderRow">
+    <td *matCellDef="let element" [attr.colspan]="columnsKeys.length" mat-cell> {{element['groupTitle']}} </td>
+  </ng-container>
+
+  <!--  total  -->
+  <ng-container matColumnDef="groupTotalRow">
+    <td *matCellDef="let element" [attr.colspan]="columnsKeys.length"
+        class="text-end"
+        mat-cell> {{element['groupTotalAmount'] | currency: "R "}} </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="columnsKeys" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: ['groupHeaderRow']"
+      [class.grouping-row]="!row['groupTitle']"
+      mat-row></tr>
+  <tr *matRowDef="let row; columns: columnsKeys;" mat-row></tr>
+  <tr *matRowDef="let row; columns: ['groupTotalRow']; let index"
+      [class.grouping-row]="!row['groupTotalAmount']"
+      mat-row></tr>
+</table>

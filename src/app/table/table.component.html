@@ -1,0 +1,38 @@
+<table [dataSource]="data"
+       class="mat-elevation-z8" mat-table
+       multiTemplateDataRows>
+  <ng-container *ngFor="let column of columnsToDisplay" matColumnDef="{{column}}">
+    <th *matHeaderCellDef mat-header-cell> {{column}} </th>
+    <td *matCellDef="let element" mat-cell> {{element[column]}} </td>
+    <td *matCellDef="let element" mat-cell> <mat-icon>{{element[column.icon]}}</mat-icon>{{element[column.title]}}</td>
+    <td *matCellDef="let element" mat-cell> total </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedDetail">
+    <td *matCellDef="let element" [attr.colspan]="columnsToDisplay.length" mat-cell>
+      <div class="hover-wrapper">
+          <div class="btn-wrapper">
+            <button mat-raised-button><mat-icon>close</mat-icon></button>
+            <button mat-raised-button><mat-icon>check</mat-icon></button>
+          </div>
+          <div class="example-element-description">
+            {{element['other']}}
+          </div>
+        <button mat-raised-button>View detail</button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+  <tr (click)="expandedElement = expandedElement === row ? null : row"
+      *matRowDef="let row; columns: columnsToDisplay;"
+      [class.d-none]="row == expandedElement"
+      class="example-element-row"
+      mat-row>
+  </tr>
+  <tr (click)="expandedElement = expandedElement === row ? null : row"
+      *matRowDef="let row; columns: ['expandedDetail']"
+      [class.d-none]="row != expandedElement"
+      [class.show]="row == expandedElement"
+      class="example-detail-row" mat-row></tr>
+</table>
